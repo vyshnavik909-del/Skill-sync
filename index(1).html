@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSync | Student Success Hub</title>
+
+<style>
+:root {
+    --bg: #f5f7fc;
+    --card: #ffffff;
+    --text: #19213d;
+    --muted: #737c96;
+    --primary: #6558e8;
+    --primary-light: #efedff;
+    --border: #e7eaf3;
+    --green: #168a62;
+    --shadow: 0 8px 28px rgba(35, 42, 85, .06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 245px;
+    background: #171b35;
+    color: white;
+    padding: 25px 16px;
+    position: fixed;
+    inset: 0 auto 0 0;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 23px;
+    font-weight: 800;
+    margin: 0 8px 6px;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #8a7bff, #5b4ce0);
+    border-radius: 12px;
+}
+
+.brand-subtitle {
+    color: #a8aec9;
+    font-size: 12px;
+    margin: 0 8px 28px;
+}
+
+.nav-label {
+    color: #8d95b5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin: 22px 10px 9px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #c9cce0;
+    text-align: left;
+    padding: 12px;
+    margin: 3px 0;
+    transition: .2s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background: #302c59;
+    color: white;
+}
+
+.nav-btn.active {
+    box-shadow: inset 3px 0 #9a8dff;
+}
+
+.sidebar-bottom {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #383c5b;
+    border-radius: 14px;
+    color: #c9cce0;
+    font-size: 12px;
+}
+
+.sidebar-bottom strong {
+    display: block;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.main {
+    width: calc(100% - 245px);
+    margin-left: 245px;
+    min-width: 0;
+}
+
+.topbar {
+    height: 76px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.topbar h2 {
+    font-size: 19px;
+}
+
+.topbar p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.profile small {
+    display: block;
+    color: var(--muted);
+}
+
+.content {
+    max-width: 1450px;
+    padding: 30px;
+    margin: auto;
+}
+
+.page {
+    display: none;
+    animation: appear .25s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes appear {
+    from {opacity: .5; transform: translateY(4px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.hero {
+    background: linear-gradient(120deg, #6558e8, #8975f3);
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.hero h1 {
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.25;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #efedff;
+    max-width: 600px;
+}
+
+.hero-badge {
+    font-size: 65px;
+    flex-shrink: 0;
+}
+
+.btn {
+    border: 0;
+    background: var(--primary);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 9px;
+    font-weight: 650;
+    transition: .2s;
+}
+
+.btn:hover {
+    filter: brightness(.94);
+    transform: translateY(-1px);
+}
+
+.btn-white {
+    background: white;
+    color: var(--primary);
+    margin-top: 18px;
+}
+
+.btn-light {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.btn-green {
+    background: #e1f7ee;
+    color: #087d54;
+}
+
+.btn-danger {
+    background: #fff0f0;
+    color: #c43c48;
+}
+
+.btn-small {
+    padding: 7px 11px;
+    font-size: 12px;
+}
+
+.grid {
+    display: grid;
+    gap: 20px;
+}
+
+.stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 24px;
+}
+
+.two-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.three-col {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    min-width: 0;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    background: var(--primary-light);
+}
+
+.stat-card:nth-child(2) .stat-icon {background:#e4f8ef;}
+.stat-card:nth-child(3) .stat-icon {background:#fff0df;}
+.stat-card:nth-child(4) .stat-icon {background:#e4f3ff;}
+
+.stat-card p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-card h2 {
+    font-size: 26px;
+    line-height: 1.3;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    font-size: 21px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 17px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.quick-action {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    color: var(--text);
+}
+
+.quick-action:hover {
+    border-color: var(--primary);
+    background: #faf9ff;
+}
+
+.quick-action span {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.quick-action strong {
+    display: block;
+    font-size: 13px;
+}
+
+.quick-action small {
+    color: var(--muted);
+}
+
+.progress-track {
+    background: #eeeff6;
+    height: 8px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6558e8, #a194ff);
+    border-radius: 20px;
+    transition: width .3s;
+}
+
+.task-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.task-row:last-child {
+    border-bottom: 0;
+}
+
+.task-row input[type="checkbox"] {
+    margin-top: 5px;
+    accent-color: var(--primary);
+}
+
+.task-row strong {
+    display: block;
+    font-size: 13px;
+}
+
+.task-row small {
+    color: var(--muted);
+}
+
+.task-row.done strong {
+    text-decoration: line-through;
+    color: #9298aa;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--primary-light);
+    color: var(--primary);
+    margin: 4px 4px 4px 0;
+}
+
+.tag.green {background:#e1f7ee;color:#087d54;}
+.tag.orange {background:#fff0df;color:#a75b0b;}
+.tag.blue {background:#e4f3ff;color:#176b9c;}
+
+.resource-card, .item-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.resource-icon {
+    width: 47px;
+    height: 47px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    background: #f0eeff;
+    border-radius: 13px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.card-footer a {
+    text-decoration: none;
+}
+
+.resource-type {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--muted);
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 650;
+    margin: 12px 0 5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #dfe3ef;
+    border-radius: 9px;
+    background: white;
+    color: var(--text);
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px #6558e81b;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 15px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-row input {
+    flex: 1;
+}
+
+.listing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.empty-state {
+    padding: 25px;
+    text-align: center;
+    color: var(--muted);
+    background: white;
+    border: 1px dashed #d8dceb;
+    border-radius: 12px;
+}
+
+.notice {
+    background: #fff8e7;
+    border: 1px solid #f4e4b7;
+    color: #77541c;
+    border-radius: 11px;
+    padding: 13px 15px;
+    font-size: 12px;
+    margin-bottom: 18px;
+}
+
+.success-box {
+    display: none;
+    margin-top: 15px;
+    background: #e5f8ef;
+    color: #087d54;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+}
+
+.filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.pill {
+    padding: 8px 13px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.pill.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.ai-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, .8fr);
+    gap: 20px;
+}
+
+.ai-banner {
+    background: linear-gradient(125deg, #272249, #5544a5);
+    color: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 18px;
+}
+
+.ai-banner p {
+    color: #e1def9;
+}
+
+.chat-box {
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    background: white;
+}
+
+.chat-messages {
+    padding: 18px;
+    height: 350px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-message {
+    padding: 12px 14px;
+    border-radius: 12px;
+    max-width: 95%;
+    font-size: 13px;
+    white-space: pre-wrap;
+}
+
+.chat-message.bot {
+    background: #f1f0ff;
+    align-self: flex-start;
+}
+
+.chat-message.user {
+    background: var(--primary);
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-input {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+    min-width: 0;
+}
+
+.suggestion-btn {
+    width: 100%;
+    text-align: left;
+    padding: 11px;
+    margin: 5px 0;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: white;
+    font-size: 12px;
+}
+
+.suggestion-btn:hover {
+    border-color: var(--primary);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px 0;
+}
+
+.small-note {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 12px;
+}
+
+.toast {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    background: #202442;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    display: none;
+    max-width: 320px;
+    font-size: 13px;
+}
+
+.mobile-menu {
+    display: none;
+    border: 0;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+@media (max-width: 1100px) {
+    .stats {grid-template-columns: repeat(2, minmax(0, 1fr));}
+    .listing-grid, .three-col {grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+
+@media (max-width: 800px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform .25s;
+        box-shadow: var(--shadow);
+    }
+
+    .sidebar.open {transform: translateX(0);}
+    .main {width: 100%;margin-left: 0;}
+    .mobile-menu {display: inline-block;}
+    .topbar {padding: 0 16px;}
+    .content {padding: 18px;}
+    .two-col, .ai-layout {grid-template-columns: 1fr;}
+}
+
+@media (max-width: 540px) {
+    .stats, .listing-grid, .three-col, .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {padding: 23px;}
+    .hero-badge {display: none;}
+    .topbar h2 {font-size: 16px;}
+    .profile > div:last-child {display: none;}
+    .card {padding: 17px;}
+    .quick-actions {grid-template-columns: 1fr;}
+    .search-row {flex-direction: column;}
+    .full-width {grid-column: auto;}
+}
+
+/* Authentication gate */
+body:not(.authenticated) .layout { display:none !important; }
+.auth-gate {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:24px; background:radial-gradient(circle at top left,#e9e5ff 0,#f5f7fc 45%,#eef3ff 100%);
+}
+.auth-card {
+  width:min(100%,480px); background:#fff; border:1px solid #e7eaf3; border-radius:22px;
+  padding:30px; box-shadow:0 20px 70px rgba(35,42,85,.13);
+}
+.auth-brand {display:flex;align-items:center;gap:11px;font-size:25px;font-weight:850;margin-bottom:8px;color:#19213d}
+.auth-brand-icon {width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#8a7bff,#5b4ce0);color:white}
+.auth-subtitle {color:#737c96;font-size:14px;margin-bottom:22px}
+.auth-tabs {display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
+.auth-tab {border:1px solid #e7eaf3;background:#f8f9fd;padding:10px 6px;border-radius:9px;font-size:12px;font-weight:700;color:#4a5068}
+.auth-tab.active {background:#efedff;border-color:#6558e8;color:#6558e8}
+.auth-panel {display:none}.auth-panel.active {display:block}
+.auth-card label {margin-top:11px}
+.auth-card .btn {width:100%;margin-top:15px;min-height:43px}
+.auth-secondary {background:#fff;color:#6558e8;border:1px solid #dcd8ff}
+.auth-message {display:none;padding:11px 12px;margin-top:13px;border-radius:9px;font-size:12px;white-space:pre-wrap}
+.auth-message.error {display:block;background:#fff0f0;color:#b42332}
+.auth-message.success {display:block;background:#e5f8ef;color:#087d54}
+.auth-small {font-size:11px;color:#737c96;margin-top:14px;line-height:1.5}
+.auth-divider {display:flex;align-items:center;gap:10px;color:#9298aa;font-size:11px;margin:15px 0}
+.auth-divider:before,.auth-divider:after {content:"";height:1px;background:#e7eaf3;flex:1}
+#recaptcha-container {margin-top:12px}
+@media(max-width:480px){.auth-card{padding:22px}.auth-tabs{grid-template-columns:1fr}}
+
+</style>
+</head>
+
+<body>
+
+<!-- Authentication screen: the prototype stays hidden until Firebase confirms login -->
+<section class="auth-gate" id="authGate" aria-label="SkillSync login">
+  <div class="auth-card">
+    <div class="auth-brand"><span class="auth-brand-icon">⚡</span> SkillSync</div>
+    <p class="auth-subtitle">Sign in to open your student success hub.</p>
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" data-auth-tab="email">Email + Password</button>
+      <button type="button" class="auth-tab" data-auth-tab="phone">Phone OTP</button>
+      <button type="button" class="auth-tab" data-auth-tab="google">Google</button>
+    </div>
+
+    <div class="auth-panel active" id="auth-email">
+      <form id="emailAuthForm">
+        <label for="authEmail">Gmail / Email address</label>
+        <input id="authEmail" type="email" autocomplete="username" placeholder="you@gmail.com" required>
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required>
+        <button class="btn" id="emailLoginBtn" type="submit">Sign in</button>
+      </form>
+      <button class="btn auth-secondary" id="emailSignupBtn" type="button">Create account</button>
+      <p class="auth-small">Use your own email and password. This is Firebase authentication, not a password stored in this HTML file.</p>
+    </div>
+
+    <div class="auth-panel" id="auth-phone">
+      <label for="authPhone">Phone number with country code</label>
+      <input id="authPhone" type="tel" autocomplete="tel" placeholder="+91 9876543210">
+      <button class="btn" id="sendOtpBtn" type="button">Send OTP</button>
+      <div id="recaptcha-container"></div>
+      <div id="otpStep" hidden>
+        <label for="authOtp">6-digit OTP</label>
+        <input id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter SMS code">
+        <button class="btn" id="verifyOtpBtn" type="button">Verify OTP & Sign in</button>
+      </div>
+      <p class="auth-small">SMS verification requires a configured Firebase project and an allowed domain. Never share your OTP.</p>
+    </div>
+
+    <div class="auth-panel" id="auth-google">
+      <p style="font-size:13px;color:#737c96">Continue using your Google account through Google's secure sign-in flow.</p>
+      <button class="btn" id="googleLoginBtn" type="button">Continue with Google</button>
+    </div>
+    <div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
+    <p class="auth-small">For a real deployment, configure Firebase Authentication first. Do not collect or store users' Gmail passwords yourself.</p>
+  </div>
+</section>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <div class="brand-icon">⚡</div>
+        SkillSync
+    </div>
+    <div class="brand-subtitle">Your student success hub</div>
+
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+    <button class="nav-btn" data-page="resources">📚 Learning Resources</button>
+    <button class="nav-btn" data-page="aihelper">🤖 AI Study Helper</button>
+    <button class="nav-btn" data-page="tasks">📝 Tasks & Study Plan</button>
+
+    <div class="nav-label">CAREER & COMMUNITY</div>
+    <button class="nav-btn" data-page="partners">👥 Study Partners</button>
+    <button class="nav-btn" data-page="internships">💼 Internship Hub</button>
+    <button class="nav-btn" data-page="projects">🚀 Project Lab</button>
+    <button class="nav-btn" data-page="profile">⚙️ My Learning Profile</button>
+
+    <div class="sidebar-bottom">
+        <strong>💜 Keep learning!</strong>
+        Small progress every day can lead to big achievements.
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button class="mobile-menu" id="menuToggle" aria-label="Open navigation">☰</button>
+            <div>
+                <h2 id="pageTitle">Dashboard</h2>
+                <p id="todayText">Your learning journey starts here.</p>
+            </div>
+        </div>
+        <div class="profile">
+            <div class="avatar" id="avatar">S</div>
+            <div>
+                <strong id="profileName">Student</strong>
+                <small id="profileCourse">CSE Student</small>
+            </div>
+            <button class="btn btn-light btn-small" id="signOutBtn" type="button">Sign out</button>
+        </div>
+    </header>
+
+    <div class="content">
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="dashboard">
+        <div class="hero">
+            <div>
+                <span class="tag" style="background:#ffffff2b;color:white">YOUR NEXT CHAPTER STARTS NOW</span>
+                <h1 id="welcomeTitle">Learn smarter.<br>Build your future.</h1>
+                <p>Find study partners, understand difficult topics, discover learning resources, apply for opportunities, and turn your ideas into projects.</p>
+                <button class="btn btn-white" onclick="showPage('aihelper')">Ask the AI Helper →</button>
+            </div>
+            <div class="hero-badge">🎓</div>
+        </div>
+
+        <div class="grid stats">
+            <div class="card stat-card">
+                <div class="stat-icon">📝</div>
+                <div><p>Tasks completed</p><h2 id="statTasks">0/0</h2></div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon">📈</div>
+                <div><p>Task progress</p><h2 id="statProgress">0%</h2></div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon">💼</div>
+                <div><p>Internship applications</p><h2 id="statInternships">0</h2></div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon">🚀</div>
+                <div><p>Saved projects</p><h2 id="statProjects">0</h2></div>
+            </div>
+        </div>
+
+        <div class="grid two-col">
+            <div class="card">
+                <div class="section-heading">
+                    <div><h2>Quick actions</h2><p>What would you like to do today?</p></div>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-action" onclick="showPage('resources')">
+                        <span>📚</span><strong>Explore resources</strong><small>Free and premium tools</small>
+                    </button>
+                    <button class="quick-action" onclick="showPage('partners')">
+                        <span>👥</span><strong>Find a study partner</strong><small>Learn together</small>
+                    </button>
+                    <button class="quick-action" onclick="showPage('tasks')">
+                        <span>📅</span><strong>Plan my study</strong><small>Organize your day</small>
+                    </button>
+                    <button class="quick-action" onclick="showPage('projects')">
+                        <span>💡</span><strong>Find project ideas</strong><small>Based on your skills</small>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-heading">
+                    <div><h2>Today's study plan</h2><p>Your next tasks</p></div>
+                    <button class="btn btn-light btn-small" onclick="showPage('tasks')">View all</button>
+                </div>
+                <div id="dashboardTasks"></div>
+                <div class="progress-track"><div class="progress-fill" id="dashboardProgress" style="width:0%"></div></div>
+                <p id="dashboardProgressText">Start with one small task.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:20px">
+            <div class="section-heading">
+                <div><h2>Recommended for you</h2><p>Resources to make learning easier</p></div>
+                <button class="btn btn-light btn-small" onclick="showPage('resources')">Explore all</button>
+            </div>
+            <div class="grid three-col" id="recommendedResources"></div>
+        </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section class="page" id="resources">
+        <div class="section-heading">
+            <div><h2>Learning Resource Library 📚</h2><p>Choose resources that match your learning style and budget.</p></div>
+        </div>
+
+        <div class="notice">
+            💡 <strong>Smart tip:</strong> Start with free resources. Consider a paid plan only if its features genuinely help you and fit your budget. Check current pricing and student offers on the official website.
+        </div>
+
+        <div class="filter-pills" id="resourceFilters">
+            <button class="pill active" data-filter="all">All resources</button>
+            <button class="pill" data-filter="free">Free / free tier</button>
+            <button class="pill" data-filter="paid">Paid / premium options</button>
+            <button class="pill" data-filter="coding">Coding</button>
+            <button class="pill" data-filter="ai">AI & notes</button>
+            <button class="pill" data-filter="practice">Practice</button>
+        </div>
+
+        <div class="listing-grid" id="resourceGrid"></div>
+
+        <div class="card" style="margin-top:22px">
+            <h3>How to study effectively with these tools</h3>
+            <div class="grid two-col" style="margin-top:12px">
+                <div>
+                    <span class="tag green">Step 1</span>
+                    <p><strong>Understand:</strong> Watch a beginner-friendly YouTube lesson or read the official documentation.</p>
+                </div>
+                <div>
+                    <span class="tag blue">Step 2</span>
+                    <p><strong>Clarify:</strong> Ask ChatGPT to explain confusing concepts in simple language with examples.</p>
+                </div>
+                <div>
+                    <span class="tag orange">Step 3</span>
+                    <p><strong>Revise:</strong> Use your class notes and, where suitable, NotebookLM to work with your own study materials.</p>
+                </div>
+                <div>
+                    <span class="tag">Step 4</span>
+                    <p><strong>Practice:</strong> Solve problems yourself and explain the answer to your study partner.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI HELPER -->
+    <section class="page" id="aihelper">
+        <div class="ai-banner">
+            <span class="tag" style="background:#ffffff24;color:white">YOUR LEARNING COMPANION</span>
+            <h1 style="font-size:28px;margin:8px 0">🤖 AI Study Helper</h1>
+            <p>Ask almost anything — study questions, coding, project planning, writing, career preparation, or everyday problem-solving. Code answers include a practical roadmap.</p>
+        </div>
+
+        <div class="notice" id="aiNotice">
+            <strong>Connect live AI:</strong> Add your own Gemini API key and press Connect AI. The prototype tests the connection before marking it connected. The key is kept in memory for this browser session only, but browser-based keys can still be exposed through developer tools/network activity. Use this only for a private demo; never publish or share a real key. For a public website, call Gemini through a backend server.
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center">
+                <input id="geminiApiKeyInput" type="password" autocomplete="off" placeholder="Paste Gemini API key here" aria-label="Gemini API key" style="flex:1;min-width:220px;background:#fff;border:1px solid #d7dbea;border-radius:9px;padding:10px;color:#19213d">
+                <button type="button" class="btn" id="connectGeminiBtn">Connect AI</button>
+                <button type="button" class="btn btn-white" id="clearGeminiKeyBtn">Clear key</button>
+            </div>
+            <span id="aiConnectionStatus" style="display:block;margin-top:6px;font-weight:700">● Add a Gemini API key to enable live AI. Offline sample answers are available.</span>
+        </div>
+
+        <div class="ai-layout">
+            <div class="chat-box">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message bot">Hi! 👋 I'm your SkillSync Study Helper.
+
+Tell me what you find confusing. For example:
+• Explain HTML in simple words
+• What is a Python loop?
+• Explain DBMS with an example
+• Help me plan my study
+
+I'll try to make the topic easier to understand.</div>
+                </div>
+                <form class="chat-input" id="chatForm">
+                    <input id="chatInput" placeholder="Ask anything: explain, solve, write code, plan, brainstorm…" required autocomplete="off">
+                    <button class="btn" type="submit">Ask ↗</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Try asking about</h3>
+                <p>Choose a topic to get a sample explanation.</p>
+                <button class="suggestion-btn" data-question="Explain HTML and CSS in simple words">🌐 HTML and CSS basics</button>
+                <button class="suggestion-btn" data-question="Explain Python loops with examples">🐍 Python loops</button>
+                <button class="suggestion-btn" data-question="Explain DBMS in simple words">🗄️ DBMS fundamentals</button>
+                <button class="suggestion-btn" data-question="Explain operating system deadlock">💻 OS deadlock</button>
+                <button class="suggestion-btn" data-question="How should I prepare for exams?">📅 Exam preparation</button>
+                <button class="suggestion-btn" data-question="Suggest a beginner CSE AI and DS project with a complete roadmap">🚀 Project ideas + roadmap</button>
+                <button class="suggestion-btn" data-question="Write a simple Python program to check whether a number is prime. Explain every line and give me a roadmap to run and improve it.">🧑‍💻 Code + roadmap</button>
+                <button class="suggestion-btn" data-question="Explain any topic I ask in simple words, with an example and a step-by-step learning roadmap.">🧠 Explain any topic</button>
+                <hr class="divider">
+                <h3>Study tip</h3>
+                <p>Ask for one concept at a time. Then solve a question without looking at the explanation. This helps you check whether you truly understand it.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="page" id="tasks">
+        <div class="section-heading">
+            <div><h2>Tasks & Study Planner 📝</h2><p>Organize college work, coding practice, and study sessions.</p></div>
+            <button class="btn" onclick="document.getElementById('taskTitle').focus()">+ Add task</button>
+        </div>
+
+        <div class="grid two-col">
+            <div class="card">
+                <h3>Create a study task</h3>
+                <form id="taskForm">
+                    <label for="taskTitle">Task name</label>
+                    <input id="taskTitle" placeholder="e.g. Revise HTML forms" required>
+
+                    <div class="form-grid">
+                        <div>
+                            <label for="taskSubject">Subject</label>
+                            <select id="taskSubject">
+                                <option>Web Development</option>
+                                <option>Python</option>
+                                <option>C Programming</option>
+                                <option>DBMS</option>
+                                <option>Operating Systems</option>
+                                <option>AI & Data Science</option>
+                                <option>GATE Preparation</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="taskDate">Due date</label>
+                            <input id="taskDate" type="date">
+                        </div>
+                        <div class="full-width">
+                            <label for="taskMinutes">Time needed</label>
+                            <select id="taskMinutes">
+                                <option value="15">15 minutes</option>
+                                <option value="30" selected>30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="90">1.5 hours</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Save task</button>
+                        <button class="btn btn-light" type="button" id="addSampleTasks">Add sample tasks</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Your progress</h3>
+                <p>Every completed task is progress.</p>
+                <div style="font-size:35px;font-weight:800;margin-top:10px" id="taskProgressBig">0%</div>
+                <div class="progress-track"><div class="progress-fill" id="taskProgressBar" style="width:0%"></div></div>
+                <p id="taskSummary">You haven't added any tasks yet.</p>
+                <hr class="divider">
+                <h3>Study routine suggestion</h3>
+                <p>1. Study one concept for 25 minutes.</p>
+                <p>2. Take a 5-minute break.</p>
+                <p>3. Practice questions for 15 minutes.</p>
+                <p>4. Explain what you learned to your study partner.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:20px">
+            <div class="section-heading">
+                <div><h2>My task list</h2><p>Mark completed tasks to update your progress.</p></div>
+                <button class="btn btn-danger btn-small" id="clearCompleted">Clear completed</button>
+            </div>
+            <div id="taskList"></div>
+        </div>
+    </section>
+
+    <!-- STUDY PARTNERS -->
+    <section class="page" id="partners">
+        <div class="section-heading">
+            <div><h2>Study Partner Community 👥</h2><p>Study together, share resources, and help each other understand difficult topics.</p></div>
+        </div>
+
+        <div class="notice">
+            Demo profiles are examples, not real verified students. In a real version, profiles and study requests would need a secure backend and privacy controls.
+        </div>
+
+        <div class="grid two-col">
+            <div class="card">
+                <h3>Find your learning match</h3>
+                <form id="partnerSearchForm">
+                    <label for="partnerSubject">Subject you want to study</label>
+                    <select id="partnerSubject">
+                        <option>Python</option>
+                        <option>C Programming</option>
+                        <option>Web Development</option>
+                        <option>DBMS</option>
+                        <option>Operating Systems</option>
+                        <option>AI & Data Science</option>
+                        <option>GATE CSE</option>
+                    </select>
+                    <label for="partnerMode">Preferred study mode</label>
+                    <select id="partnerMode">
+                        <option>Online</option>
+                        <option>In person</option>
+                        <option>Either</option>
+                    </select>
+                    <label for="partnerTime">Preferred time</label>
+                    <select id="partnerTime">
+                        <option>Evening</option>
+                        <option>Morning</option>
+                        <option>Afternoon</option>
+                        <option>Flexible</option>
+                    </select>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Find partners</button>
+                    </div>
+                </form>
+                <div id="partnerSearchResult" class="success-box"></div>
+            </div>
+
+            <div class="card">
+                <h3>Make a study session</h3>
+                <p>Plan a session with your existing study partner.</p>
+                <form id="sessionForm">
+                    <label for="sessionTopic">Topic</label>
+                    <input id="sessionTopic" placeholder="e.g. Python functions" required>
+                    <label for="sessionDate">Date and time</label>
+                    <input id="sessionDate" type="datetime-local" required>
+                    <label for="sessionPartner">Partner name or group</label>
+                    <input id="sessionPartner" placeholder="e.g. My study group" required>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Save session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="section-heading" style="margin-top:28px">
+            <div><h2>Suggested study partners</h2><p>Example profiles for your prototype.</p></div>
+        </div>
+        <div class="listing-grid" id="partnerGrid"></div>
+
+        <div class="card" style="margin-top:20px">
+            <div class="section-heading">
+                <div><h2>My study sessions</h2><p>Your saved study plans.</p></div>
+            </div>
+            <div id="sessionList"></div>
+        </div>
+
+        <div class="card" style="margin-top:20px">
+            <h3>📚 Share resources with your partner</h3>
+            <p style="margin-bottom:12px">A simple study routine you can follow together.</p>
+            <div class="grid two-col">
+                <div>
+                    <span class="tag green">Learn</span>
+                    <p>Watch one tutorial together and write down the main concepts.</p>
+                </div>
+                <div>
+                    <span class="tag blue">Discuss</span>
+                    <p>Use ChatGPT to clarify questions, then verify important answers with course materials.</p>
+                </div>
+                <div>
+                    <span class="tag orange">Revise</span>
+                    <p>Use NotebookLM with your own eligible notes and documents if its features suit your needs.</p>
+                </div>
+                <div>
+                    <span class="tag">Practice</span>
+                    <p>Solve three questions independently and explain your solutions to each other.</p>
+                </div>
+            </div>
+            <button class="btn btn-light" style="margin-top:12px" onclick="showPage('resources')">Browse learning resources →</button>
+        </div>
+    </section>
+
+    <!-- INTERNSHIPS -->
+    <section class="page" id="internships">
+        <div class="section-heading">
+            <div><h2>Internship Hub 💼</h2><p>Discover example opportunities and track your application progress.</p></div>
+        </div>
+
+        <div class="notice">
+            These listings are sample prototype data. Clicking Apply records a demo application only; it does not contact an employer. Verify real internships, eligibility, fees, and company details through official sources before applying.
+        </div>
+
+        <div class="search-row">
+            <input id="internshipSearch" placeholder="Search by role, skill, or company...">
+            <select id="internshipType" style="max-width:180px">
+                <option value="all">All types</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="On-site">On-site</option>
+            </select>
+        </div>
+
+        <div class="listing-grid" id="internshipGrid"></div>
+
+        <div class="card" style="margin-top:22px">
+            <h3>My demo applications</h3>
+            <p>Update each status as your application moves forward.</p>
+            <div id="applicationList" style="margin-top:12px"></div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="page" id="projects">
+        <div class="section-heading">
+            <div><h2>Project Lab 🚀</h2><p>Find a suitable project and check whether it fits your current skills, time, and team.</p></div>
+        </div>
+
+        <div class="grid two-col">
+            <div class="card">
+                <h3>Find a project for me</h3>
+                <p>Choose your current level and interests.</p>
+                <form id="projectRecommendForm">
+                    <label for="projectLevel">Current level</label>
+                    <select id="projectLevel">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+
+                    <label for="projectInterest">Main interest</label>
+                    <select id="projectInterest">
+                        <option>Web Development</option>
+                        <option>Artificial Intelligence</option>
+                        <option>Data Science</option>
+                        <option>Python Programming</option>
+                        <option>Social Impact</option>
+                    </select>
+
+                    <div class="form-grid">
+                        <div>
+                            <label for="projectHours">Hours per week</label>
+                            <select id="projectHours">
+                                <option value="2">1–2 hours</option>
+                                <option value="5" selected>3–5 hours</option>
+                                <option value="10">6–10 hours</option>
+                                <option value="15">10+ hours</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="projectTeam">Team size</label>
+                            <select id="projectTeam">
+                                <option value="1">Solo</option>
+                                <option value="2">2 students</option>
+                                <option value="4">3–4 students</option>
+                                <option value="6">5+ students</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label>Select your skills</label>
+                    <div class="form-grid" id="projectSkills">
+                        <label><input type="checkbox" value="HTML/CSS" checked style="width:auto"> HTML/CSS</label>
+                        <label><input type="checkbox" value="JavaScript" style="width:auto"> JavaScript</label>
+                        <label><input type="checkbox" value="Python" checked style="width:auto"> Python</label>
+                        <label><input type="checkbox" value="C" checked style="width:auto"> C basics</label>
+                        <label><input type="checkbox" value="SQL" style="width:auto"> SQL</label>
+                        <label><input type="checkbox" value="AI/ML" style="width:auto"> AI/ML basics</label>
+                        <label><input type="checkbox" value="Data Analysis" style="width:auto"> Data analysis</label>
+                        <label><input type="checkbox" value="UI Design" style="width:auto"> UI design</label>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Recommend projects ✨</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Project feasibility checker</h3>
+                <p>Enter a project idea to estimate how manageable it may be.</p>
+                <form id="feasibilityForm">
+                    <label for="feasibilityName">Project idea</label>
+                    <input id="feasibilityName" placeholder="e.g. Student Study Planner" required>
+                    <label for="feasibilityLevel">Your experience</label>
+                    <select id="feasibilityLevel">
+                        <option value="1">Beginner</option>
+                        <option value="2">Intermediate</option>
+                        <option value="3">Advanced</option>
+                    </select>
+                    <label for="feasibilityHours">Hours available each week</label>
+                    <select id="feasibilityHours">
+                        <option value="2">1–2 hours</option>
+                        <option value="5" selected>3–5 hours</option>
+                        <option value="10">6–10 hours</option>
+                        <option value="15">10+ hours</option>
+                    </select>
+                    <label for="feasibilityDuration">Desired completion time</label>
+                    <select id="feasibilityDuration">
+                        <option value="1">1 week</option>
+                        <option value="2" selected>2–4 weeks</option>
+                        <option value="3">1–2 months</option>
+                        <option value="4">More than 2 months</option>
+                    </select>
+                    <label for="feasibilityComplexity">Expected complexity</label>
+                    <select id="feasibilityComplexity">
+                        <option value="1">Simple — basic features</option>
+                        <option value="2" selected>Medium — several features</option>
+                        <option value="3">Complex — AI, database, APIs</option>
+                    </select>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Check feasibility</button>
+                    </div>
+                </form>
+                <div id="feasibilityResult" class="success-box"></div>
+            </div>
+        </div>
+
+        <div class="section-heading" style="margin-top:28px">
+            <div><h2>Recommended projects</h2><p>Suggestions based on the skills selected above.</p></div>
+        </div>
+        <div class="listing-grid" id="projectGrid"></div>
+
+        <div class="card" style="margin-top:22px">
+            <h3>My saved project ideas</h3>
+            <div id="savedProjects" style="margin-top:12px"></div>
+        </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="page" id="profile">
+        <div class="section-heading">
+            <div><h2>My Learning Profile ⚙️</h2><p>Personalize resources and project recommendations.</p></div>
+        </div>
+
+        <div class="grid two-col">
+            <div class="card">
+                <h3>Student information</h3>
+                <form id="profileForm">
+                    <label for="studentName">Your name</label>
+                    <input id="studentName" placeholder="Enter your name" required>
+                    <label for="studentCourse">Course / branch</label>
+                    <input id="studentCourse" placeholder="e.g. BTech CSE AI & DS">
+                    <label for="studentLevel">Learning level</label>
+                    <select id="studentLevel">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                    <label for="studentGoal">Main learning goal</label>
+                    <select id="studentGoal">
+                        <option>Improve programming</option>
+                        <option>Prepare for GATE</option>
+                        <option>Get an internship</option>
+                        <option>Build projects</option>
+                        <option>Prepare for exams</option>
+                    </select>
+                    <label for="studentHours">Available study time</label>
+                    <select id="studentHours">
+                        <option>30 minutes per day</option>
+                        <option>1 hour per day</option>
+                        <option>2 hours per day</option>
+                        <option>Flexible</option>
+                    </select>
+                    <div class="form-actions">
+                        <button class="btn" type="submit">Save profile</button>
+                        <button class="btn btn-light" type="button" id="resetData">Reset demo data</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>How SkillSync supports you</h3>
+                <div class="task-row">
+                    <span>📚</span>
+                    <div><strong>Personalized learning</strong><small>Discover tools that fit your skills and learning style.</small></div>
+                </div>
+                <div class="task-row">
+                    <span>🤖</span>
+                    <div><strong>General AI help</strong><small>Ask open-ended questions and get explanations, examples, and code roadmaps.</small></div>
+                </div>
+                <div class="task-row">
+                    <span>👥</span>
+                    <div><strong>Peer learning</strong><small>Plan sessions and learn collaboratively.</small></div>
+                </div>
+                <div class="task-row">
+                    <span>🚀</span>
+                    <div><strong>Career preparation</strong><small>Track demo applications and build portfolio projects.</small></div>
+                </div>
+                <hr class="divider">
+                <p><strong>Privacy:</strong> This prototype stores information in your browser's local storage. Avoid entering passwords, private documents, or sensitive personal details on a shared computer.</p>
+            </div>
+        </div>
+    </section>
+
+    </div>
+</main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =========================================================
+   SKILLSYNC: single-file frontend prototype
+   Data is saved in this browser using localStorage.
+   ========================================================= */
+
+const STORAGE_KEY = "skillsync_prototype_v2";
+
+const defaultState = {
+    profile: {
+        name: "Student",
+        course: "BTech CSE AI & DS",
+        level: "Beginner",
+        goal: "Improve programming",
+        hours: "1 hour per day"
+    },
+    tasks: [
+        {id: 1, title: "Revise HTML structure and tags", subject: "Web Development", date: "", minutes: 30, done: false},
+        {id: 2, title: "Practice Python loops", subject: "Python", date: "", minutes: 30, done: false},
+        {id: 3, title: "Review C programming basics", subject: "C Programming", date: "", minutes: 30, done: false}
+    ],
+    applications: [],
+    savedProjects: [],
+    sessions: [],
+    partnerRequests: []
+};
+
+let state = loadState();
+let currentResourceFilter = "all";
+let currentInternshipSearch = "";
+
+function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            return {
+                ...clone(defaultState),
+                ...parsed,
+                profile: {...defaultState.profile, ...(parsed.profile || {})},
+                tasks: Array.isArray(parsed.tasks) ? parsed.tasks : clone(defaultState.tasks),
+                applications: Array.isArray(parsed.applications) ? parsed.applications : [],
+                savedProjects: Array.isArray(parsed.savedProjects) ? parsed.savedProjects : [],
+                sessions: Array.isArray(parsed.sessions) ? parsed.sessions : [],
+                partnerRequests: Array.isArray(parsed.partnerRequests) ? parsed.partnerRequests : []
+            };
+        }
+    } catch (error) {
+        console.warn("Could not load saved data.", error);
+    }
+    return clone(defaultState);
+}
+
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+        showToast("Your browser could not save data. Check its storage settings.");
+    }
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.style.display = "block";
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.style.display = "none", 2800);
+}
+
+const pageTitles = {
+    dashboard: "Dashboard",
+    resources: "Learning Resources",
+    aihelper: "AI Study Helper",
+    tasks: "Tasks & Study Plan",
+    partners: "Study Partners",
+    internships: "Internship Hub",
+    projects: "Project Lab",
+    profile: "My Learning Profile"
+};
+
+function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+    document.querySelectorAll(".nav-btn").forEach(button => button.classList.remove("active"));
+
+    const target = document.getElementById(pageId);
+    if (!target) return;
+
+    target.classList.add("active");
+    const nav = document.querySelector('.nav-btn[data-page="' + pageId + '"]');
+    if (nav) nav.classList.add("active");
+
+    document.getElementById("pageTitle").textContent = pageTitles[pageId] || "SkillSync";
+    document.getElementById("sidebar").classList.remove("open");
+
+    window.scrollTo({top: 0, behavior: "smooth"});
+
+    if (pageId === "projects") renderProjects();
+    if (pageId === "partners") renderPartners();
+    if (pageId === "internships") renderInternships();
+}
+
+document.querySelectorAll(".nav-btn").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.toggle("open");
+});
+
+const resources = [
+    {
+        name: "YouTube Learning",
+        icon: "▶️",
+        type: "free",
+        category: "coding",
+        description: "Watch beginner-friendly lessons, coding walkthroughs, and revision videos.",
+        benefit: "Great for visual learning",
+        url: "https://www.youtube.com/"
+    },
+    {
+        name: "ChatGPT",
+        icon: "🤖",
+        type: "free",
+        category: "ai",
+        description: "Ask questions, simplify concepts, practice interview questions, and get examples.",
+        benefit: "Concept explanations",
+        url: "https://chatgpt.com/"
+    },
+    {
+        name: "freeCodeCamp",
+        icon: "💻",
+        type: "free",
+        category: "coding",
+        description: "Learn web development and programming through free lessons and exercises.",
+        benefit: "Hands-on practice",
+        url: "https://www.freecodecamp.org/"
+    },
+    {
+        name: "W3Schools",
+        icon: "🌐",
+        type: "free",
+        category: "coding",
+        description: "Read simple tutorials and try HTML, CSS, JavaScript, and SQL examples.",
+        benefit: "Quick reference",
+        url: "https://www.w3schools.com/"
+    },
+    {
+        name: "MDN Web Docs",
+        icon: "📖",
+        type: "free",
+        category: "coding",
+        description: "Use detailed web development documentation and code examples.",
+        benefit: "Reliable reference",
+        url: "https://developer.mozilla.org/"
+    },
+    {
+        name: "GeeksforGeeks",
+        icon: "🧠",
+        type: "free",
+        category: "practice",
+        description: "Study data structures, algorithms, computer science, and interview topics.",
+        benefit: "CS practice",
+        url: "https://www.geeksforgeeks.org/"
+    },
+    {
+        name: "Python Official Tutorial",
+        icon: "🐍",
+        type: "free",
+        category: "coding",
+        description: "Learn Python from the official documentation and examples.",
+        benefit: "Official reference",
+        url: "https://docs.python.org/3/tutorial/"
+    },
+    {
+        name: "Kaggle Learn",
+        icon: "📊",
+        type: "free",
+        category: "practice",
+        description: "Practice Python, data visualization, pandas, and introductory machine learning.",
+        benefit: "AI & DS practice",
+        url: "https://www.kaggle.com/learn"
+    },
+    {
+        name: "NotebookLM",
+        icon: "📓",
+        type: "free",
+        category: "ai",
+        description: "Work with supported source materials to explore notes, ask source-grounded questions, and create study aids. Available features and usage limits may vary.",
+        benefit: "Study from your notes",
+        url: "https://notebooklm.google.com/"
+    },
+    {
+        name: "Coursera",
+        icon: "🎓",
+        type: "paid",
+        category: "practice",
+        description: "Explore structured courses and professional certificates. Some courses may offer free access or financial aid.",
+        benefit: "Structured courses",
+        url: "https://www.coursera.org/"
+    },
+    {
+        name: "Udemy",
+        icon: "📚",
+        type: "paid",
+        category: "coding",
+        description: "Explore instructor-led courses. Course prices and discounts vary.",
+        benefit: "Learn at your pace",
+        url: "https://www.udemy.com/"
+    },
+    {
+        name: "LinkedIn Learning",
+        icon: "💼",
+        type: "paid",
+        category: "practice",
+        description: "Explore professional skills and technology courses. Trial and access options vary.",
+        benefit: "Career skills",
+        url: "https://www.linkedin.com/learning/"
+    },
+    {
+        name: "GitHub Student Developer Pack",
+        icon: "🐙",
+        type: "free",
+        category: "coding",
+        description: "Check student eligibility for developer tools and learning benefits.",
+        benefit: "Student developer tools",
+        url: "https://education.github.com/pack"
+    }
+];
+
+function resourceCard(resource) {
+    const badge = resource.type === "free"
+        ? '<span class="tag green">Free / free tier</span>'
+        : '<span class="tag orange">Paid / premium options</span>';
+
+    return `
+        <article class="card resource-card">
+            <div class="resource-icon">${resource.icon}</div>
+            <div class="resource-type">${escapeHTML(resource.category)}</div>
+            <h3>${escapeHTML(resource.name)}</h3>
+            <p>${escapeHTML(resource.description)}</p>
+            <div>${badge}</div>
+            <div class="card-footer">
+                <span class="muted" style="font-size:11px">${escapeHTML(resource.benefit)}</span>
+                <a class="btn btn-light btn-small" href="${escapeHTML(resource.url)}" target="_blank" rel="noopener noreferrer">Open tool ↗</a>
+            </div>
+        </article>`;
+}
+
+function renderResources() {
+    const filtered = resources.filter(resource => {
+        if (currentResourceFilter === "all") return true;
+        if (currentResourceFilter === "free" || currentResourceFilter === "paid") {
+            return resource.type === currentResourceFilter;
+        }
+        return resource.category === currentResourceFilter;
+    });
+
+    document.getElementById("resourceGrid").innerHTML = filtered.length
+        ? filtered.map(resourceCard).join("")
+        : '<div class="empty-state">No resources found.</div>';
+
+    document.getElementById("recommendedResources").innerHTML =
+        resources.slice(0, 3).map(resourceCard).join("");
+}
+
+document.querySelectorAll("#resourceFilters .pill").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll("#resourceFilters .pill").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        currentResourceFilter = button.dataset.filter;
+        renderResources();
+    });
+});
+
+/* Tasks */
+
+function addTask(task) {
+    state.tasks.unshift({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        title: task.title,
+        subject: task.subject || "Other",
+        date: task.date || "",
+        minutes: Number(task.minutes || 30),
+        done: false
+    });
+    saveState();
+    renderTasks();
+    renderDashboard();
+}
+
+document.getElementById("taskForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    addTask({
+        title: document.getElementById("taskTitle").value.trim(),
+        subject: document.getElementById("taskSubject").value,
+        date: document.getElementById("taskDate").value,
+        minutes: document.getElementById("taskMinutes").value
+    });
+
+    event.target.reset();
+    showToast("Study task saved!");
+});
+
+document.getElementById("addSampleTasks").addEventListener("click", () => {
+    const samples = [
+        {title: "Watch one HTML tutorial", subject: "Web Development", minutes: 30},
+        {title: "Solve five Python questions", subject: "Python", minutes: 45},
+        {title: "Revise one GATE topic", subject: "GATE Preparation", minutes: 30}
+    ];
+    samples.forEach(task => state.tasks.unshift({
+        ...task,
+        id: Date.now() + Math.floor(Math.random() * 100000),
+        date: "",
+        done: false
+    }));
+    saveState();
+    renderTasks();
+    renderDashboard();
+    showToast("Sample tasks added!");
+});
+
+function toggleTask(id) {
+    const task = state.tasks.find(item => item.id === id);
+    if (!task) return;
+    task.done = !task.done;
+    saveState();
+    renderTasks();
+    renderDashboard();
+}
+
+function deleteTask(id) {
+    state.tasks = state.tasks.filter(item => item.id !== id);
+    saveState();
+    renderTasks();
+    renderDashboard();
+    showToast("Task deleted.");
+}
+
+document.getElementById("clearCompleted").addEventListener("click", () => {
+    state.tasks = state.tasks.filter(task => !task.done);
+    saveState();
+    renderTasks();
+    renderDashboard();
+    showToast("Completed tasks cleared.");
+});
+
+function taskMarkup(task) {
+    const dateLabel = task.date ? "Due " + escapeHTML(task.date) : "No due date";
+    return `
+        <div class="task-row ${task.done ? "done" : ""}">
+            <input type="checkbox" aria-label="Mark task complete" ${task.done ? "checked" : ""}
+                onchange="toggleTask(${task.id})">
+            <div style="flex:1;min-width:0">
+                <strong>${escapeHTML(task.title)}</strong>
+                <small>${escapeHTML(task.subject)} · ${task.minutes} min · ${dateLabel}</small>
+            </div>
+            <button class="btn btn-danger btn-small" onclick="deleteTask(${task.id})" aria-label="Delete task">✕</button>
+        </div>`;
+}
+
+function renderTasks() {
+    const list = document.getElementById("taskList");
+    list.innerHTML = state.tasks.length
+        ? state.tasks.map(taskMarkup).join("")
+        : '<div class="empty-state">No tasks yet. Add your first study task above.</div>';
+
+    const total = state.tasks.length;
+    const done = state.tasks.filter(task => task.done).length;
+    const progress = total ? Math.round(done / total * 100) : 0;
+
+    document.getElementById("taskProgressBig").textContent = progress + "%";
+    document.getElementById("taskProgressBar").style.width = progress + "%";
+    document.getElementById("taskSummary").textContent =
+        total ? `${done} of ${total} tasks completed.` : "You haven't added any tasks yet.";
+}
+
+/* Internships */
+
+const internships = [
+    {
+        id: "intern-1",
+        company: "Demo Tech Labs",
+        role: "Frontend Development Intern",
+        type: "Remote",
+        duration: "6 weeks",
+        level: "Beginner-friendly",
+        skills: ["HTML", "CSS", "JavaScript"],
+        description: "Practice responsive pages and build a small web portfolio.",
+        url: "https://internshala.com/"
+    },
+    {
+        id: "intern-2",
+        company: "Sample Data Studio",
+        role: "Python & Data Intern",
+        type: "Remote",
+        duration: "8 weeks",
+        level: "Beginner-friendly",
+        skills: ["Python", "Pandas", "Data analysis"],
+        description: "Explore datasets, create visualizations, and document findings.",
+        url: "https://www.kaggle.com/"
+    },
+    {
+        id: "intern-3",
+        company: "Example AI Research",
+        role: "AI/ML Project Trainee",
+        type: "Hybrid",
+        duration: "8 weeks",
+        level: "Basic Python recommended",
+        skills: ["Python", "AI/ML", "Data"],
+        description: "Learn introductory machine learning concepts through small projects.",
+        url: "https://www.linkedin.com/jobs/"
+    },
+    {
+        id: "intern-4",
+        company: "Campus Web Studio",
+        role: "Web Design Intern",
+        type: "On-site",
+        duration: "4 weeks",
+        level: "Beginner-friendly",
+        skills: ["HTML", "CSS", "UI design"],
+        description: "Create website mockups and practice front-end implementation.",
+        url: "https://internshala.com/"
+    },
+    {
+        id: "intern-5",
+        company: "Open Source Practice",
+        role: "Open Source Contributor",
+        type: "Remote",
+        duration: "Flexible",
+        level: "Beginner to intermediate",
+        skills: ["Git", "Programming", "Teamwork"],
+        description: "Build a public portfolio by contributing to suitable open-source projects.",
+        url: "https://github.com/"
+    },
+    {
+        id: "intern-6",
+        company: "Student Innovation Lab",
+        role: "Software Project Intern",
+        type: "Hybrid",
+        duration: "6 weeks",
+        level: "Beginner-friendly",
+        skills: ["Problem solving", "Python", "Web"],
+        description: "Work through the planning and development stages of a small prototype.",
+        url: "https://www.linkedin.com/jobs/"
+    }
+];
+
+function renderInternships() {
+    const query = (document.getElementById("internshipSearch").value || "").toLowerCase();
+    const type = document.getElementById("internshipType").value;
+
+    const filtered = internships.filter(item => {
+        const text = `${item.company} ${item.role} ${item.skills.join(" ")} ${item.description}`.toLowerCase();
+        return text.includes(query) && (type === "all" || item.type === type);
+    });
+
+    document.getElementById("internshipGrid").innerHTML = filtered.length
+        ? filtered.map(item => {
+            const applied = state.applications.some(app => app.internshipId === item.id);
+            return `
+                <article class="card item-card">
+                    <span class="tag blue">${escapeHTML(item.type)}</span>
+                    <h3>${escapeHTML(item.role)}</h3>
+                    <p><strong>${escapeHTML(item.company)}</strong></p>
+                    <p>${escapeHTML(item.description)}</p>
+                    <div>${item.skills.map(skill => `<span class="tag">${escapeHTML(skill)}</span>`).join("")}</div>
+                    <p>⏱ ${escapeHTML(item.duration)} · ${escapeHTML(item.level)}</p>
+                    <div class="card-footer">
+                        <button class="btn ${applied ? "btn-green" : ""} btn-small"
+                            onclick="applyInternship('${item.id}')">${applied ? "Applied ✓" : "Apply (demo)"}</button>
+                        <a class="btn btn-light btn-small" target="_blank" rel="noopener noreferrer"
+                            href="${escapeHTML(item.url)}">Explore ↗</a>
+                    </div>
+                </article>`;
+        }).join("")
+        : '<div class="empty-state">No matching listings. Try another search.</div>';
+
+    renderApplications();
+}
+
+document.getElementById("internshipSearch").addEventListener("input", renderInternships);
+document.getElementById("internshipType").addEventListener("change", renderInternships);
+
+function applyInternship(id) {
+    const item = internships.find(internship => internship.id === id);
+    if (!item) return;
+
+    if (state.applications.some(app => app.internshipId === id)) {
+        showToast("You have already applied in this demo.");
+        return;
+    }
+
+    state.applications.unshift({
+        internshipId: id,
+        role: item.role,
+        company: item.company,
+        status: "Applied",
+        date: new Date().toLocaleDateString()
+    });
+
+    saveState();
+    renderInternships();
+    renderDashboard();
+    showToast("Demo application saved in your browser.");
+}
+
+function updateApplicationStatus(index, status) {
+    if (!state.applications[index]) return;
+    state.applications[index].status = status;
+    saveState();
+    renderApplications();
+    renderDashboard();
+}
+
+function renderApplications() {
+    const container = document.getElementById("applicationList");
+
+    if (!state.applications.length) {
+        container.innerHTML = '<div class="empty-state">No demo applications yet. Explore the sample listings above.</div>';
+        return;
+    }
+
+    container.innerHTML = state.applications.map((app, index) => `
+        <div class="task-row">
+            <div style="flex:1">
+                <strong>${escapeHTML(app.role)}</strong>
+                <small>${escapeHTML(app.company)} · Saved ${escapeHTML(app.date)}</small>
+            </div>
+            <select aria-label="Application status" style="max-width:150px"
+                onchange="updateApplicationStatus(${index},this.value)">
+                ${["Interested","Applied","Assessment","Interview","Offer","Not selected"].map(status =>
+                    `<option ${app.status === status ? "selected" : ""}>${status}</option>`
+                ).join("")}
+            </select>
+        </div>
+    `).join("");
+}
+
+/* Study partners */
+
+const partners = [
+    {id:"partner-1", name:"Aarav", subject:"Python", mode:"Online", time:"Evening", level:"Beginner", goal:"Practice Python basics and solve coding questions.", icon:"👨‍💻"},
+    {id:"partner-2", name:"Meera", subject:"Web Development", mode:"Online", time:"Evening", level:"Beginner", goal:"Build HTML/CSS mini projects and revise JavaScript.", icon:"👩‍💻"},
+    {id:"partner-3", name:"Riya", subject:"AI & Data Science", mode:"Online", time:"Flexible", level:"Beginner", goal:"Explore pandas, datasets, and introductory AI topics.", icon:"📊"},
+    {id:"partner-4", name:"Kabir", subject:"GATE CSE", mode:"Online", time:"Morning", level:"Intermediate", goal:"Revise computer science fundamentals and solve practice questions.", icon:"📘"},
+    {id:"partner-5", name:"Ananya", subject:"C Programming", mode:"In person", time:"Afternoon", level:"Beginner", goal:"Practice loops, functions, arrays, and basic problem solving.", icon:"💻"},
+    {id:"partner-6", name:"Dev", subject:"DBMS", mode:"Online", time:"Flexible", level:"Beginner", goal:"Study SQL queries, normalization, and database concepts.", icon:"🗄️"}
+];
+
+let partnerFilter = null;
+
+document.getElementById("partnerSearchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    partnerFilter = {
+        subject: document.getElementById("partnerSubject").value,
+        mode: document.getElementById("partnerMode").value,
+        time: document.getElementById("partnerTime").value
+    };
+    renderPartners();
+    document.getElementById("partnerSearchResult").style.display = "block";
+    document.getElementById("partnerSearchResult").textContent =
+        "Showing example profiles matching your preferences where possible.";
+});
+
+function requestPartner(id) {
+    if (state.partnerRequests.includes(id)) {
+        showToast("You already sent a demo request to this profile.");
+        return;
+    }
+    state.partnerRequests.push(id);
+    saveState();
+    renderPartners();
+    showToast("Demo study request saved.");
+}
+
+function renderPartners() {
+    const filtered = partners.filter(partner => {
+        if (!partnerFilter) return true;
+        const subjectMatch = partner.subject === partnerFilter.subject ||
+            partner.subject === "AI & Data Science" && partnerFilter.subject === "Python";
+        const modeMatch = partnerFilter.mode === "Either" || partner.mode === partnerFilter.mode;
+        const timeMatch = partnerFilter.time === "Flexible" ||
+            partner.time === "Flexible" || partner.time === partnerFilter.time;
+        return subjectMatch && modeMatch && timeMatch;
+    });
+
+    const display = filtered.length ? filtered : partners.filter(partner =>
+        !partnerFilter || partner.subject === partnerFilter.subject
+    );
+
+    document.getElementById("partnerGrid").innerHTML = display.length
+        ? display.map(partner => {
+            const requested = state.partnerRequests.includes(partner.id);
+            return `
+                <article class="card item-card">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div class="avatar" style="font-size:22px">${partner.icon}</div>
+                        <div><h3 style="margin:0">${escapeHTML(partner.name)}</h3>
+                        <p>${escapeHTML(partner.level)} learner</p></div>
+                    </div>
+                    <p>📚 ${escapeHTML(partner.subject)}</p>
+                    <p>🕒 ${escapeHTML(partner.time)} · ${escapeHTML(partner.mode)}</p>
+                    <p>${escapeHTML(partner.goal)}</p>
+                    <div class="card-footer">
+                        <button class="btn ${requested ? "btn-green" : ""} btn-small"
+                            onclick="requestPartner('${partner.id}')">${requested ? "Request sent ✓" : "Send study request"}</button>
+                    </div>
+                </article>`;
+        }).join("")
+        : '<div class="empty-state">No profiles found. Try changing your preferences.</div>';
+}
+
+document.getElementById("sessionForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    state.sessions.unshift({
+        id: Date.now(),
+        topic: document.getElementById("sessionTopic").value.trim(),
+        date: document.getElementById("sessionDate").value,
+        partner: document.getElementById("sessionPartner").value.trim()
+    });
+
+    saveState();
+    renderSessions();
+    event.target.reset();
+    showToast("Study session saved!");
+});
+
+function deleteSession(id) {
+    state.sessions = state.sessions.filter(session => session.id !== id);
+    saveState();
+    renderSessions();
+}
+
+function renderSessions() {
+    const container = document.getElementById("sessionList");
+
+    container.innerHTML = state.sessions.length
+        ? state.sessions.map(session => `
+            <div class="task-row">
+                <div style="flex:1">
+                    <strong>${escapeHTML(session.topic)}</strong>
+                    <small>${escapeHTML(session.partner)} · ${escapeHTML(session.date.replace("T"," "))}</small>
+                </div>
+                <button class="btn btn-danger btn-small" onclick="deleteSession(${session.id})">Delete</button>
+            </div>
+        `).join("")
+        : '<div class="empty-state">No study sessions scheduled yet.</div>';
+}
+
+/* Project recommendations */
+
+const projectCatalog = [
+    {id:"proj-1", name:"Student Study Planner", interest:"Web Development", level:1, hours:5, team:1, skills:["HTML/CSS","JavaScript"], description:"A planner for study tasks, deadlines, and progress.", steps:"Build the layout, add tasks, save them in localStorage.", duration:"1–2 weeks", icon:"📅"},
+    {id:"proj-2", name:"Personal Portfolio Website", interest:"Web Development", level:1, hours:2, team:1, skills:["HTML/CSS"], description:"Showcase your skills, projects, resume, and contact details.", steps:"Create sections, style the page, make it responsive.", duration:"1 week", icon:"🌐"},
+    {id:"proj-3", name:"Study Partner Finder", interest:"Social Impact", level:1, hours:5, team:2, skills:["HTML/CSS","JavaScript"], description:"Help students find peers with similar learning goals.", steps:"Build profiles, add filters, save demo requests.", duration:"2–3 weeks", icon:"👥"},
+    {id:"proj-4", name:"Internship Application Tracker", interest:"Web Development", level:1, hours:5, team:1, skills:["HTML/CSS","JavaScript"], description:"Track internship roles, deadlines, and application statuses.", steps:"Build a listing, add application actions, save statuses.", duration:"1–2 weeks", icon:"💼"},
+    {id:"proj-5", name:"Student Expense Dashboard", interest:"Data Science", level:1, hours:5, team:1, skills:["Python","Data Analysis"], description:"Summarize sample student expenses with charts and categories.", steps:"Use a sample dataset, clean it, calculate totals, plot results.", duration:"2–3 weeks", icon:"📊"},
+    {id:"proj-6", name:"AI Study Notes Assistant", interest:"Artificial Intelligence", level:2, hours:10, team:2, skills:["Python","AI/ML"], description:"Prototype a tool that summarizes notes and generates practice questions.", steps:"Start with sample text, design prompts, evaluate outputs, add a UI.", duration:"4–6 weeks", icon:"🤖"},
+    {id:"proj-7", name:"Campus Help Portal", interest:"Social Impact", level:1, hours:5, team:2, skills:["HTML/CSS","JavaScript"], description:"A portal for campus FAQs, event details, and student resources.", steps:"Create categories, build searchable content, test with classmates.", duration:"2–4 weeks", icon:"🏫"},
+    {id:"proj-8", name:"Python Quiz App", interest:"Python Programming", level:1, hours:2, team:1, skills:["Python"], description:"A quiz app that checks answers and tracks scores.", steps:"Create questions, check answers, calculate scores, add levels.", duration:"1 week", icon:"🧩"},
+    {id:"proj-9", name:"Dataset Explorer", interest:"Data Science", level:2, hours:10, team:2, skills:["Python","Data Analysis"], description:"Explore a public dataset and present trends in a simple dashboard.", steps:"Choose a dataset, clean it, analyze it, visualize key findings.", duration:"3–5 weeks", icon:"📈"},
+    {id:"proj-10", name:"Smart Learning Resource Recommender", interest:"Artificial Intelligence", level:2, hours:10, team:2, skills:["Python","AI/ML"], description:"Recommend learning links based on subjects, skills, and goals.", steps:"Create a resource catalogue, build matching rules, test recommendations.", duration:"3–5 weeks", icon:"🎯"},
+    {id:"proj-11", name:"C Programming Practice Tool", interest:"Python Programming", level:1, hours:5, team:1, skills:["C"], description:"A collection of beginner C questions with explanations and test cases.", steps:"Organize topics, create questions, add examples and expected outputs.", duration:"1–2 weeks", icon:"💻"},
+    {id:"proj-12", name:"Crime Evidence Timeline Demo", interest:"Artificial Intelligence", level:3, hours:15, team:4, skills:["Python","AI/ML","Data Analysis"], description:"Use fictional data to create an explainable event timeline and relationship graph.", steps:"Design fictional records, extract entities, link events, show evidence provenance.", duration:"6–10 weeks", icon:"🔎"}
+];
+
+function selectedSkills() {
+    return [...document.querySelectorAll('#projectSkills input[type="checkbox"]:checked')]
+        .map(input => input.value);
+}
+
+function recommendProjects(event) {
+    if (event) event.preventDefault();
+
+    const level = document.getElementById("projectLevel").selectedIndex + 1;
+    const interest = document.getElementById("projectInterest").value;
+    const hours = Number(document.getElementById("projectHours").value);
+    const team = Number(document.getElementById("projectTeam").value);
+    const skills = selectedSkills();
+
+    const ranked = projectCatalog.map(project => {
+        let score = 0;
+        const matchingSkills = project.skills.filter(skill => skills.includes(skill)).length;
+        score += matchingSkills * 3;
+        if (project.interest === interest) score += 4;
+        else if (interest === "Data Science" && project.interest === "Artificial Intelligence") score += 2;
+        else if (interest === "Artificial Intelligence" && project.interest === "Data Science") score += 2;
+
+        if (project.level <= level) score += 3;
+        else score -= (project.level - level) * 2;
+
+        if (hours >= project.hours) score += 2;
+        else score -= 2;
+
+        if (team >= project.team) score += 1;
+        else if (project.team > team) score -= 1;
+
+        return {...project, score, matchingSkills};
+    }).sort((a, b) => b.score - a.score);
+
+    const chosen = ranked.slice(0, 6);
+    document.getElementById("projectGrid").innerHTML = chosen.map(projectCard).join("");
+}
+
+document.getElementById("projectRecommendForm").addEventListener("submit", recommendProjects);
+
+function projectCard(project) {
+    const saved = state.savedProjects.some(item => item.id === project.id);
+    const levelText = ["Beginner", "Intermediate", "Advanced"][project.level - 1];
+
+    return `
+        <article class="card item-card">
+            <div class="resource-icon">${project.icon}</div>
+            <span class="tag ${project.level === 1 ? "green" : project.level === 2 ? "orange" : "blue"}">${levelText}</span>
+            <h3>${escapeHTML(project.name)}</h3>
+            <p>${escapeHTML(project.description)}</p>
+            <p><strong>Suggested time:</strong> ${escapeHTML(project.duration)}</p>
+            <p><strong>Skills:</strong> ${project.skills.map(escapeHTML).join(", ")}</p>
+            <div class="card-footer">
+                <button class="btn ${saved ? "btn-green" : ""} btn-small"
+                    onclick="saveProject('${project.id}')">${saved ? "Saved ✓" : "Save idea"}</button>
+                <button class="btn btn-light btn-small"
+                    onclick="explainProject('${project.id}')">View steps</button>
+            </div>
+        </article>`;
+}
+
+function saveProject(id) {
+    const project = projectCatalog.find(item => item.id === id);
+    if (!project) return;
+
+    if (state.savedProjects.some(item => item.id === id)) {
+        showToast("This project is already saved.");
+        return;
+    }
+
+    state.savedProjects.unshift({
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        steps: project.steps,
+        duration: project.duration
+    });
+
+    saveState();
+    renderProjects();
+    renderDashboard();
+    showToast("Project idea saved!");
+}
+
+function explainProject(id) {
+    const project = projectCatalog.find(item => item.id === id);
+    if (!project) return;
+
+    addBotMessage(
+        "Project: " + project.name +
+        "\n\nGoal: " + project.description +
+        "\n\nBeginner-friendly steps:\n" + project.steps +
+        "\n\nSuggested time: " + project.duration +
+        "\n\nTip: Build a small working version first. Add advanced features only after the basics work."
+    );
+
+    showPage("aihelper");
+}
+
+function renderProjects() {
+    if (!document.getElementById("projectGrid").innerHTML.trim()) {
+        recommendProjects();
+    }
+
+    const container = document.getElementById("savedProjects");
+    container.innerHTML = state.savedProjects.length
+        ? state.savedProjects.map(project => `
+            <div class="task-row">
+                <div style="flex:1">
+                    <strong>${escapeHTML(project.name)}</strong>
+                    <small>${escapeHTML(project.duration)} · ${escapeHTML(project.description)}</small>
+                </div>
+                <button class="btn btn-danger btn-small" onclick="removeProject('${project.id}')">Remove</button>
+            </div>
+        `).join("")
+        : '<div class="empty-state">No saved ideas yet. Explore your recommendations above.</div>';
+}
+
+function removeProject(id) {
+    state.savedProjects = state.savedProjects.filter(project => project.id !== id);
+    saveState();
+    renderProjects();
+    renderDashboard();
+    showToast("Saved project removed.");
+}
+
+/* Feasibility checker */
+
+document.getElementById("feasibilityForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("feasibilityName").value.trim();
+    const level = Number(document.getElementById("feasibilityLevel").value);
+    const hours = Number(document.getElementById("feasibilityHours").value);
+    const duration = Number(document.getElementById("feasibilityDuration").value);
+    const complexity = Number(document.getElementById("feasibilityComplexity").value);
+
+    let score = 100;
+
+    if (complexity > level) score -= (complexity - level) * 18;
+    if (hours <= 2 && complexity >= 2) score -= 22;
+    else if (hours <= 5 && complexity === 3) score -= 18;
+    else if (hours >= 10) score += 5;
+
+    if (duration === 1 && complexity >= 2) score -= 25;
+    else if (duration === 2 && complexity === 3) score -= 12;
+    else if (duration >= 3) score += 5;
+
+    score = Math.max(10, Math.min(100, score));
+
+    let verdict;
+    let advice;
+
+    if (score >= 75) {
+        verdict = "Looks manageable";
+        advice = "Start with a small working version, then add optional features.";
+    } else if (score >= 50) {
+        verdict = "Manageable with a smaller scope";
+        advice = "Reduce the number of features, allow more time, or find a teammate.";
+    } else {
+        verdict = "Consider simplifying the idea";
+        advice = "Choose one core feature first. Learn the required basics before attempting advanced integrations.";
+    }
+
+    const result = document.getElementById("feasibilityResult");
+    result.style.display = "block";
+    result.innerHTML = `
+        <strong>${escapeHTML(name)}: ${score}/100 — ${verdict}</strong>
+        <p style="color:#087d54;margin-top:6px">${escapeHTML(advice)}</p>
+        <p style="color:#087d54;margin-top:6px;font-size:11px">This is a rough planning estimate, not a guarantee of project success.</p>
+    `;
+});
+
+/* Single-file AI Study Helper.
+   The browser calls Gemini directly; this is convenient for a personal demo,
+   but it is NOT a secure backend. Never publish a file containing a real key. */
+const chatHistory = [];
+let aiBusy = false;
+let geminiApiKey = ""; // kept in memory only; not saved to localStorage
+const GEMINI_MODEL = "gemini-3.8-flash";
+const SYSTEM_INSTRUCTION = `You are SkillSync AI Helper, a helpful general-purpose assistant similar to everyday AI chat assistants.
+Answer the student's actual question, even if it is not about computer science. Support education, coding, writing, brainstorming, planning, practical everyday questions, and career preparation.
+Use clear, friendly language. Adapt to the user's level and requested language. Be accurate and state uncertainty when needed.
+Whenever you provide code, ALWAYS include a section titled ROADMAP with numbered steps covering: what the code does; tools/files needed; where to paste/save each file; how to run it; how to test expected output; common errors and debugging; and a sensible next improvement. For multi-file projects, provide a roadmap for every file and explain how files connect. Include complete runnable code when requested.
+For code questions, answer the question, provide code if useful, then the ROADMAP.`;
+
+function setAIStatus(text, connected = false) {
+    const status = document.getElementById("aiConnectionStatus");
+    if (!status) return;
+    status.textContent = text;
+    status.style.color = connected ? "#087d54" : "#77541c";
+}
+
+document.getElementById("connectGeminiBtn")?.addEventListener("click", async () => {
+    const field = document.getElementById("geminiApiKeyInput");
+    const key = field.value.trim();
+    const button = document.getElementById("connectGeminiBtn");
+
+    if (!key) {
+        geminiApiKey = "";
+        setAIStatus("● Paste your Gemini API key first.", false);
+        field.focus();
+        return;
+    }
+
+    // Keep the key in memory only. Never write it to localStorage or the HTML file.
+    geminiApiKey = key;
+    field.value = "";
+    button.disabled = true;
+    button.textContent = "Testing…";
+    setAIStatus("● Testing the Gemini connection…", false);
+
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 20000);
+        let response;
+        let data;
+        try {
+            response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-goog-api-key": geminiApiKey
+                    },
+                    body: JSON.stringify({
+                        contents: [{ role: "user", parts: [{ text: "Reply with only: Connected" }] }],
+                        generationConfig: { temperature: 0, maxOutputTokens: 20 }
+                    }),
+                    signal: controller.signal
+                }
+            );
+            data = await response.json().catch(() => ({}));
+        } finally {
+            clearTimeout(timeoutId);
+        }
+
+        if (!response.ok) {
+            const message = data?.error?.message || `HTTP ${response.status}`;
+            if (response.status === 400 || response.status === 401 || response.status === 403) {
+                throw new Error("The key or API request was rejected: " + message);
+            }
+            if (response.status === 429) {
+                throw new Error("Gemini usage limit reached. Check API quota/billing and try again.");
+            }
+            throw new Error(message);
+        }
+
+        setAIStatus("● Gemini connected successfully. Ask anything below!", true);
+    } catch (error) {
+        geminiApiKey = "";
+        const message = error.name === "AbortError"
+            ? "Connection timed out. Check your internet and try again."
+            : (error.message || "Unknown connection error.");
+        setAIStatus("● Could not connect to Gemini. " + message, false);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Connect AI";
+    }
+});
+
+document.getElementById("clearGeminiKeyBtn")?.addEventListener("click", () => {
+    geminiApiKey = "";
+    document.getElementById("geminiApiKeyInput").value = "";
+    setAIStatus("● API key cleared. Offline sample answers are available.", false);
+});
+
+function fallbackAnswerQuestion(question) {
+    const q = question.toLowerCase();
+    const answers = [
+        {keys:["html","css","website","web development"], answer:"🌐 HTML creates the structure of a web page, while CSS controls its appearance.\n\nExample:\n<h1>Hello Student</h1>\n\nROADMAP:\n1. Create a folder and save the page as index.html.\n2. Add the basic HTML structure.\n3. Add a heading, paragraph, and button.\n4. Add CSS for colors, spacing, and layout.\n5. Open index.html in your browser and test it.\n6. Next, learn forms, Flexbox, Grid, and responsive design."},
+        {keys:["python","loop","prime number"], answer:"🐍 A Python loop repeats instructions.\n\nExample:\nfor number in range(1, 4):\n    print(number)\n\nOutput:\n1\n2\n3\n\nROADMAP:\n1. Install Python or use an online Python editor.\n2. Save the code as main.py.\n3. Run: python main.py\n4. Change the range and predict the output.\n5. Practise if/else, functions, lists, and small projects."},
+        {keys:["dbms","database","sql"], answer:"🗄️ A DBMS stores, organizes, searches, and updates data.\n\nExample SQL:\nSELECT * FROM Students;\n\nThis retrieves all rows and columns from Students.\n\nROADMAP:\n1. Learn tables, rows, columns, and keys.\n2. Practise SELECT and WHERE.\n3. Learn INSERT, UPDATE, and DELETE.\n4. Create a small student database.\n5. Test queries in a SQL tool."},
+        {keys:["deadlock","operating system","os concept"], answer:"💻 An operating-system deadlock happens when processes wait for resources held by one another, so none can continue.\n\nROADMAP:\n1. Learn processes and resources.\n2. Understand mutual exclusion, hold-and-wait, no preemption, and circular wait.\n3. Draw a resource-allocation graph.\n4. Practise identifying deadlocks in examples."},
+        {keys:["gate","exam","study plan","prepare","revision"], answer:"📅 A simple study plan:\n1. Choose one small topic.\n2. Study for 25 minutes.\n3. Take a short break.\n4. Solve 3–5 practice questions.\n5. Explain the concept aloud without notes.\n6. Revise it tomorrow.\n\nROADMAP: list subjects → divide them into topics → schedule daily sessions → practise questions → review weekly."},
+        {keys:["project","idea","prototype"], answer:"🚀 Beginner project ideas: a student study planner, personal portfolio, Python quiz app, student marks analyzer, or internship tracker.\n\nROADMAP:\n1. Define one problem.\n2. List the minimum features.\n3. Draw the screens.\n4. Build one feature at a time.\n5. Test with sample data.\n6. Document improvements."},
+        {keys:["c programming","c language","pointer","array"], answer:"💻 C is useful for learning programming fundamentals.\n\nExample:\n#include <stdio.h>\nint main(void) {\n    printf(\"Hello World\\n\");\n    return 0;\n}\n\nROADMAP:\n1. Install a C compiler or use an online compiler.\n2. Save as hello.c.\n3. Compile and run it.\n4. Practise variables, input/output, if/else, loops, arrays, and functions."},
+        {keys:["ai","artificial intelligence","machine learning","ml"], answer:"🤖 Artificial Intelligence (AI) is the field of building systems that perform tasks such as understanding language or recognizing patterns. Machine Learning (ML) is a part of AI that learns patterns from data.\n\nROADMAP: Python basics → NumPy and pandas → data visualization → basic statistics → train/test split → beginner ML models → evaluation."}
+    ];
+    const match = answers.find(item => item.keys.some(key => q.includes(key)));
+    if (match) return match.answer + "\n\nNote: This is an offline sample answer. Add your Gemini API key above for live answers.";
+    if (/^(hi|hello|hey)\b/.test(q)) return "Hi! 👋 I'm SkillSync AI Helper. Add your Gemini API key above to enable general-purpose live answers. Code answers include a step-by-step ROADMAP.";
+    return "I can show only limited sample answers while offline. Add a Gemini API key above and click Connect AI to ask questions on any topic.";
+}
+
+function addMessage(text, type) {
+    const messages = document.getElementById("chatMessages");
+    const message = document.createElement("div");
+    message.className = "chat-message " + type;
+    message.textContent = text;
+    messages.appendChild(message);
+    messages.scrollTop = messages.scrollHeight;
+    return message;
+}
+function addBotMessage(text) { addMessage(text, "bot"); }
+
+async function askAI(question) {
+    if (aiBusy) return;
+    aiBusy = true;
+    const submitButton = document.querySelector('#chatForm button[type="submit"]');
+    if (submitButton) { submitButton.disabled = true; submitButton.textContent = "Thinking…"; }
+    const pending = addMessage("Thinking…", "bot");
+    try {
+        if (!geminiApiKey) {
+            pending.textContent = fallbackAnswerQuestion(question);
+            chatHistory.push({role:"user", text:question}, {role:"model", text:pending.textContent});
+            setAIStatus("● Offline sample mode. Add your Gemini API key above for live AI.", false);
+            return;
+        }
+        const contents = chatHistory.slice(-12)
+            .filter(item => ["user", "model"].includes(item.role))
+            .map(item => ({role:item.role, parts:[{text:item.text.slice(0,6000)}]}));
+        contents.push({role:"user", parts:[{text:question}]});
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json", "x-goog-api-key":geminiApiKey},
+            body:JSON.stringify({
+                system_instruction:{parts:[{text:SYSTEM_INSTRUCTION}]},
+                contents,
+                generationConfig:{temperature:0.65, maxOutputTokens:6000}
+            })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const apiMessage = data?.error?.message || "Gemini API request failed.";
+            if (response.status === 400 || response.status === 401 || response.status === 403) {
+                throw new Error("Gemini rejected the API key or request. Check your key and API access. Details: " + apiMessage);
+            }
+            if (response.status === 429) throw new Error("Gemini usage limit reached. Wait a moment and try again.");
+            throw new Error(apiMessage);
+        }
+        const answer = (data.candidates?.[0]?.content?.parts || []).map(part => part.text || "").join("").trim();
+        if (!answer) throw new Error("Gemini returned an empty answer. Please try again.");
+        pending.textContent = answer;
+        chatHistory.push({role:"user", text:question}, {role:"model", text:answer});
+        setAIStatus("● Live AI connected — powered by Gemini", true);
+    } catch (error) {
+        pending.textContent = "Could not get a live AI response. " + (error.message || "Please try again.") + "\n\n" + fallbackAnswerQuestion(question);
+        chatHistory.push({role:"user", text:question}, {role:"model", text:pending.textContent});
+        setAIStatus("● Live AI request failed. Check the API key, internet connection, and API limits.", false);
+    } finally {
+        aiBusy = false;
+        if (submitButton) { submitButton.disabled = false; submitButton.textContent = "Ask ↗"; }
+        document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
+    }
+}
+
+document.getElementById("chatForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const input = document.getElementById("chatInput");
+    const question = input.value.trim();
+    if (!question || aiBusy) return;
+    addMessage(question, "user");
+    input.value = "";
+    askAI(question);
+});
+document.querySelectorAll(".suggestion-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        const question = button.dataset.question;
+        if (!question || aiBusy) return;
+        addMessage(question, "user");
+        askAI(question);
+    });
+});
+
+/* Profile */
+
+document.getElementById("profileForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    state.profile = {
+        name: document.getElementById("studentName").value.trim() || "Student",
+        course: document.getElementById("studentCourse").value.trim() || "CSE Student",
+        level: document.getElementById("studentLevel").value,
+        goal: document.getElementById("studentGoal").value,
+        hours: document.getElementById("studentHours").value
+    };
+
+    saveState();
+    renderProfile();
+    renderDashboard();
+    showToast("Your learning profile has been saved.");
+});
+
+function renderProfile() {
+    document.getElementById("studentName").value = state.profile.name;
+    document.getElementById("studentCourse").value = state.profile.course;
+    document.getElementById("studentLevel").value = state.profile.level;
+    document.getElementById("studentGoal").value = state.profile.goal;
+    document.getElementById("studentHours").value = state.profile.hours;
+
+    document.getElementById("profileName").textContent = state.profile.name || "Student";
+    document.getElementById("profileCourse").textContent = state.profile.course || "CSE Student";
+    document.getElementById("avatar").textContent = (state.profile.name || "S").trim().charAt(0).toUpperCase();
+    document.getElementById("welcomeTitle").innerHTML =
+        "Welcome back, " + escapeHTML(state.profile.name || "Student") + "!<br>Let's learn smarter.";
+}
+
+document.getElementById("resetData").addEventListener("click", () => {
+    const confirmed = confirm("Reset all SkillSync demo data in this browser? This cannot be undone.");
+    if (!confirmed) return;
+
+    state = clone(defaultState);
+    saveState();
+    partnerFilter = null;
+    currentResourceFilter = "all";
+
+    renderAll();
+    showPage("dashboard");
+    showToast("Demo data has been reset.");
+});
+
+/* Dashboard */
+
+function renderDashboard() {
+    const total = state.tasks.length;
+    const done = state.tasks.filter(task => task.done).length;
+    const progress = total ? Math.round(done / total * 100) : 0;
+
+    document.getElementById("statTasks").textContent = `${done}/${total}`;
+    document.getElementById("statProgress").textContent = `${progress}%`;
+    document.getElementById("statInternships").textContent = state.applications.length;
+    document.getElementById("statProjects").textContent = state.savedProjects.length;
+
+    document.getElementById("dashboardProgress").style.width = progress + "%";
+    document.getElementById("dashboardProgressText").textContent =
+        total ? `${done} of ${total} tasks completed — keep going!` : "Add a task to start tracking your progress.";
+
+    const upcoming = state.tasks.filter(task => !task.done).slice(0, 4);
+    document.getElementById("dashboardTasks").innerHTML = upcoming.length
+        ? upcoming.map(task => `
+            <div class="task-row">
+                <input type="checkbox" aria-label="Complete task" onchange="toggleTask(${task.id})">
+                <div style="flex:1">
+                    <strong>${escapeHTML(task.title)}</strong>
+                    <small>${escapeHTML(task.subject)} · ${task.minutes} min</small>
+                </div>
+            </div>
+        `).join("")
+        : '<div class="empty-state">All tasks completed, or no tasks yet. Great job!</div>';
+}
+
+function renderAll() {
+    renderProfile();
+    renderTasks();
+    renderDashboard();
+    renderResources();
+    renderInternships();
+    renderPartners();
+    renderSessions();
+    renderProjects();
+}
+
+const now = new Date();
+document.getElementById("todayText").textContent =
+    now.toLocaleDateString(undefined, {weekday:"long", month:"short", day:"numeric"}) +
+    " · Make today count.";
+
+renderAll();
+</script>
+
+<!-- Firebase Authentication SDKs. Configure the project settings below before use. -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script>
+/*
+  SETUP REQUIRED:
+  1. Create a project at https://console.firebase.google.com/
+  2. Add a Web App and paste its Firebase config below.
+  3. Authentication > Sign-in method: enable Email/Password, Phone, and Google.
+  4. Authentication > Settings: add the domain where this prototype is hosted.
+  5. For phone OTP, test with Firebase test phone numbers first.
+  Keep the Firebase web config here (it is not a password); secure access with Firebase rules
+  and provider settings. Never put service-account credentials or private server secrets in HTML.
+*/
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_FIREBASE_WEB_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  appId: "PASTE_YOUR_FIREBASE_APP_ID"
+};
+
+let firebaseReady = false;
+let confirmationResult = null;
+let recaptchaVerifier = null;
+const authGate = document.getElementById("authGate");
+const authMessage = document.getElementById("authMessage");
+
+function setAuthMessage(message, type="error") {
+  authMessage.textContent = message;
+  authMessage.className = "auth-message " + type;
+}
+function clearAuthMessage() {
+  authMessage.textContent = "";
+  authMessage.className = "auth-message";
+}
+function setAuthBusy(button, busy, busyText="Please wait…") {
+  if (!button) return;
+  if (busy) {
+    button.dataset.originalText = button.textContent;
+    button.textContent = busyText;
+    button.disabled = true;
+  } else {
+    button.textContent = button.dataset.originalText || button.textContent;
+    button.disabled = false;
+  }
+}
+function firebaseConfigured() {
+  return firebaseConfig.apiKey !== "PASTE_YOUR_FIREBASE_WEB_API_KEY" &&
+    firebaseConfig.projectId !== "PASTE_YOUR_PROJECT_ID" &&
+    firebaseConfig.appId !== "PASTE_YOUR_FIREBASE_APP_ID";
+}
+function friendlyAuthError(error) {
+  const code = error && error.code ? error.code : "";
+  const messages = {
+    "auth/invalid-email":"Enter a valid email address.",
+    "auth/invalid-credential":"Email/password is incorrect, or the account does not exist.",
+    "auth/user-not-found":"No account found. Choose Create account first.",
+    "auth/wrong-password":"Incorrect password. Try again.",
+    "auth/email-already-in-use":"This email already has an account. Please sign in.",
+    "auth/weak-password":"Use a password with at least 6 characters.",
+    "auth/too-many-requests":"Too many attempts. Please wait and try again.",
+    "auth/invalid-phone-number":"Enter your phone number with country code, for example +91…",
+    "auth/invalid-verification-code":"That OTP is incorrect. Check the SMS and try again.",
+    "auth/code-expired":"That OTP has expired. Send a new one.",
+    "auth/operation-not-allowed":"This sign-in method is not enabled in Firebase Authentication.",
+    "auth/unauthorized-domain":"Add this website's domain in Firebase Authentication settings.",
+    "auth/billing-not-enabled":"Firebase phone authentication may require billing to be enabled for this project."
+  };
+  return messages[code] || ((error && error.message) ? error.message : "Authentication failed. Check your Firebase configuration and try again.");
+}
+function switchAuthTab(tab) {
+  document.querySelectorAll(".auth-tab").forEach(b => b.classList.toggle("active", b.dataset.authTab === tab));
+  document.querySelectorAll(".auth-panel").forEach(p => p.classList.toggle("active", p.id === "auth-" + tab));
+  clearAuthMessage();
+}
+document.querySelectorAll(".auth-tab").forEach(button => {
+  button.addEventListener("click", () => switchAuthTab(button.dataset.authTab));
+});
+
+try {
+  if (firebaseConfigured() && window.firebase) {
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    window.skillSyncAuth = firebase.auth();
+    firebaseReady = true;
+    window.skillSyncAuth.onAuthStateChanged(user => {
+      if (user) {
+        document.body.classList.add("authenticated");
+        authGate.style.display = "none";
+        const displayName = user.displayName || (user.email ? user.email.split("@")[0] : user.phoneNumber || "Student");
+        const profileName = document.getElementById("profileName");
+        const avatar = document.getElementById("avatar");
+        if (profileName && (!state.profile.name || state.profile.name === "Student")) profileName.textContent = displayName;
+        if (avatar && displayName) avatar.textContent = displayName.charAt(0).toUpperCase();
+      } else {
+        document.body.classList.remove("authenticated");
+        authGate.style.display = "flex";
+      }
+    });
+  } else {
+    // Demo mode lets the standalone HTML prototype be explored without Firebase setup.
+    window.skillSyncDemoMode = true;
+    setAuthMessage("Demo mode is active: sign-in is simulated locally. Configure Firebase for real accounts and SMS OTP.", "success");
+  }
+} catch (error) {
+  window.skillSyncDemoMode = true;
+  setAuthMessage("Firebase could not initialize; demo mode is active. Configure Firebase for real authentication.", "success");
+}
+
+function enterDemoSession(label, email) {
+  document.body.classList.add("authenticated");
+  authGate.style.display = "none";
+  const displayName = label || (email ? email.split("@")[0] : "Student");
+  const profileName = document.getElementById("profileName");
+  const avatar = document.getElementById("avatar");
+  if (profileName) profileName.textContent = displayName;
+  if (avatar) avatar.textContent = displayName.charAt(0).toUpperCase();
+  sessionStorage.setItem("skillsyncDemoSession", JSON.stringify({name: displayName, email: email || ""}));
+  showToast("Welcome to SkillSync demo!");
+}
+
+// Restore the demo session after a page refresh (this is not secure authentication).
+if (window.skillSyncDemoMode) {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem("skillsyncDemoSession") || "null");
+    if (saved) {
+      document.body.classList.add("authenticated");
+      authGate.style.display = "none";
+      const profileName = document.getElementById("profileName");
+      const avatar = document.getElementById("avatar");
+      if (profileName) profileName.textContent = saved.name || "Student";
+      if (avatar) avatar.textContent = (saved.name || "S").charAt(0).toUpperCase();
+    }
+  } catch (_) {}
+}
+
+document.getElementById("emailAuthForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearAuthMessage();
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  if (!firebaseReady) {
+    if (!email || !email.includes("@")) return setAuthMessage("Enter a valid email address.");
+    if (!password) return setAuthMessage("Enter a password to continue.");
+    return enterDemoSession(email.split("@")[0], email);
+  }
+  const button = document.getElementById("emailLoginBtn");
+  setAuthBusy(button, true, "Signing in…");
+  try {
+    await skillSyncAuth.signInWithEmailAndPassword(email, password);
+    setAuthMessage("Signed in successfully.", "success");
+  } catch (error) {
+    setAuthMessage(friendlyAuthError(error));
+  } finally {
+    setAuthBusy(button, false);
+  }
+});
+document.getElementById("emailSignupBtn").addEventListener("click", async () => {
+  clearAuthMessage();
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  if (!email || !email.includes("@") || !password) return setAuthMessage("Enter a valid email and a password first.");
+  if (!firebaseReady) return enterDemoSession(email.split("@")[0], email);
+  const button = document.getElementById("emailSignupBtn");
+  setAuthBusy(button, true, "Creating account…");
+  try {
+    await skillSyncAuth.createUserWithEmailAndPassword(email, password);
+    setAuthMessage("Account created and signed in successfully.", "success");
+  } catch (error) {
+    setAuthMessage(friendlyAuthError(error));
+  } finally {
+    setAuthBusy(button, false);
+  }
+});
+document.getElementById("googleLoginBtn").addEventListener("click", async () => {
+  clearAuthMessage();
+  if (!firebaseReady) return enterDemoSession("Google Demo User", "demo@gmail.com");
+  const button = document.getElementById("googleLoginBtn");
+  setAuthBusy(button, true, "Opening Google…");
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await skillSyncAuth.signInWithPopup(provider);
+  } catch (error) {
+    setAuthMessage(friendlyAuthError(error));
+  } finally {
+    setAuthBusy(button, false);
+  }
+});
+document.getElementById("sendOtpBtn").addEventListener("click", async () => {
+  clearAuthMessage();
+  const phone = document.getElementById("authPhone").value.trim();
+  if (!phone) return setAuthMessage("Enter your phone number including country code, e.g. +91…");
+  if (!firebaseReady) {
+    window.skillSyncDemoPhone = phone;
+    document.getElementById("otpStep").hidden = false;
+    setAuthMessage("Demo OTP generated: use 123456. No SMS is sent in demo mode.", "success");
+    return;
+  }
+  const button = document.getElementById("sendOtpBtn");
+  setAuthBusy(button, true, "Sending OTP…");
+  try {
+    if (!recaptchaVerifier) {
+      recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+        size: "normal",
+        callback: () => clearAuthMessage(),
+        "expired-callback": () => setAuthMessage("reCAPTCHA expired. Please verify again.")
+      });
+      await recaptchaVerifier.render();
+    }
+    confirmationResult = await skillSyncAuth.signInWithPhoneNumber(phone, recaptchaVerifier);
+    document.getElementById("otpStep").hidden = false;
+    setAuthMessage("OTP sent. Check your SMS messages.", "success");
+  } catch (error) {
+    setAuthMessage(friendlyAuthError(error));
+    if (recaptchaVerifier) {
+      try { recaptchaVerifier.clear(); } catch (_) {}
+      recaptchaVerifier = null;
+      document.getElementById("recaptcha-container").innerHTML = "";
+    }
+  } finally {
+    setAuthBusy(button, false);
+  }
+});
+document.getElementById("verifyOtpBtn").addEventListener("click", async () => {
+  clearAuthMessage();
+  const otp = document.getElementById("authOtp").value.trim();
+  if (!/^\d{6}$/.test(otp)) return setAuthMessage("Enter the 6-digit OTP.");
+  if (!firebaseReady) {
+    if (!window.skillSyncDemoPhone) return setAuthMessage("Enter your phone number and request an OTP first.");
+    if (otp !== "123456") return setAuthMessage("Demo OTP is 123456. Enter it to continue.");
+    return enterDemoSession("Student " + window.skillSyncDemoPhone.slice(-4), window.skillSyncDemoPhone);
+  }
+  if (!confirmationResult) return setAuthMessage("Send an OTP first.");
+  const button = document.getElementById("verifyOtpBtn");
+  setAuthBusy(button, true, "Verifying…");
+  try {
+    await confirmationResult.confirm(otp);
+    setAuthMessage("Phone verified. You are signed in.", "success");
+  } catch (error) {
+    setAuthMessage(friendlyAuthError(error));
+  } finally {
+    setAuthBusy(button, false);
+  }
+});
+document.getElementById("signOutBtn").addEventListener("click", async () => {
+  if (!firebaseReady) {
+    sessionStorage.removeItem("skillsyncDemoSession");
+    document.body.classList.remove("authenticated");
+    authGate.style.display = "flex";
+    showToast("You have signed out.");
+    return;
+  }
+  try {
+    await skillSyncAuth.signOut();
+    showToast("You have signed out.");
+  } catch (error) {
+    showToast(friendlyAuthError(error));
+  }
+});
+</script>
+
+</body>
+</html>
