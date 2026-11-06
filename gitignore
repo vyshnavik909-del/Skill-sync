@@ -1,0 +1,18 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment files and secrets — never commit API keys
+.env
+.env.*
+!.env.example
+
+# Dependencies/build output (not used by the current static prototype)
+node_modules/
+dist/
+build/
